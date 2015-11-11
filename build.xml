@@ -465,6 +465,7 @@
         <copy file="JavaSE.jar" tofile="${tools.dist.dir}/CordovaProjectTemplate/JavaSE.jar"/>
         <copy file="lib/CodenameOne.jar" tofile="${tools.dist.dir}/CordovaProjectTemplate/lib/CodenameOne.jar"/>
         <copy file="lib/CodenameOne_SRC.zip" tofile="${tools.dist.dir}/CordovaProjectTemplate/lib/CodenameOne_SRC.zip"/>
+        <copy file="lib/CLDC11.jar" tofile="${tools.dist.dir}/CordovaProjectTemplate/lib/CLDC11.jar"/>
         <property name="tools.dist.zip" location="dist/cn1-cordova-tools.zip"/>
         <zip file="${tools.dist.zip}">
             <fileset dir="${tools.dist.dir}" includes="**"/>

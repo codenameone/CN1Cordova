@@ -86,7 +86,12 @@ public class CodenameOneCordovaProject {
         }
         
         if (version != null) {
-            codenameOneSettings.setProperty("codename1.version", version);
+            try {
+                double ver = Double.parseDouble(version);
+                codenameOneSettings.setProperty("codename1.version", "" + ver);
+            } catch(NumberFormatException err) {
+                System.out.println("Couldn't convert version, Codename One versions must be decimal numbers for increased portability");
+            } 
             
         }
         
@@ -155,6 +160,8 @@ public class CodenameOneCordovaProject {
         
         File nbprojectDir = new File(projectDir, "nbproject");
         
+        new File(projectDir, "override").mkdirs();
+        new File(projectDir, "native" + File.separator + "internal_tmp").mkdirs();
         File nbprojectPropertiesFile = new File(nbprojectDir, "project.properties");
         if (nbprojectPropertiesFile.exists()) {
             Properties nbprojectProperties = null;

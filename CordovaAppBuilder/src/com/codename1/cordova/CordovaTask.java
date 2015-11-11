@@ -95,7 +95,6 @@ public class CordovaTask extends Task {
                 unzip.setSrc(templateFile);
                 unzip.execute();
                 unzip.setDescription("Extracting Netbeans project template");
-                
             } catch (IOException ex) {
                 throw new BuildException(ex);
             } finally {
@@ -164,6 +163,8 @@ public class CordovaTask extends Task {
             }
         }
          
+        new File(cn1ProjectDir, "override").mkdirs();
+        new File(cn1ProjectDir, "native" + File.separator + "internal_tmp").mkdirs();
         
         this.log("A Codename One Netbeans project has been created at "+cn1ProjectDir);
             
