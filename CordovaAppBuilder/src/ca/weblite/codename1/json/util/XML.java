@@ -38,7 +38,7 @@ SOFTWARE.
  */
 public class XML {
 
-    /** The Character '&'. */
+    /** The Character '&amp;'. */
     public static final Character AMP   = new Character('&');
 
     /** The Character '''. */
@@ -50,10 +50,10 @@ public class XML {
     /** The Character '='. */
     public static final Character EQ    = new Character('=');
 
-    /** The Character '>'. */
+    /** The Character '&gt;'. */
     public static final Character GT    = new Character('>');
 
-    /** The Character '<'. */
+    /** The Character '&lt;'. */
     public static final Character LT    = new Character('<');
 
     /** The Character '?'. */
@@ -68,10 +68,10 @@ public class XML {
     /**
      * Replace special characters with XML escapes:
      * <pre>
-     * &amp; <small>(ampersand)</small> is replaced by &amp;amp;
-     * &lt; <small>(less than)</small> is replaced by &amp;lt;
-     * &gt; <small>(greater than)</small> is replaced by &amp;gt;
-     * &quot; <small>(double quote)</small> is replaced by &amp;quot;
+     * &amp; (ampersand) is replaced by &amp;amp;
+     * &lt; &lt;small&gt;(less than)&lt;/small&gt; is replaced by &amp;lt;
+     * &gt; &lt;small&gt;(greater than)&lt;/small&gt; is replaced by &amp;gt;
+     * &quot; &lt;small&gt;(double quote)&lt;/small&gt; is replaced by &amp;quot;
      * </pre>
      * @param string The string to be escaped.
      * @return The escaped string.
@@ -270,10 +270,10 @@ public class XML {
      * does not like to distinguish between elements and attributes.
      * Sequences of similar elements are represented as JSONArrays. Content
      * text may be placed in a "content" member. Comments, prologs, DTDs, and
-     * <code>&lt;[ [ ]]></code> are ignored.
+     * <code>&lt;[ [ ]]&gt;</code> are ignored.
      * @param string The source string.
      * @return A JSONObject containing the structured data from the XML string.
-     * @throws JSONException
+     * @throws JSONException If there is a parse error.
      */
     public static JSONObject toJSONObject(String string) throws JSONException {
         JSONObject o = new JSONObject();
@@ -290,7 +290,7 @@ public class XML {
      * Convert a JSONObject into a well-formed, element-normal XML string.
      * @param o A JSONObject.
      * @return  A string.
-     * @throws  JSONException
+     * @throws  JSONException if there is a parse error.
      */
     public static String toString(Object o) throws JSONException {
         return toString(o, null);
@@ -302,7 +302,7 @@ public class XML {
      * @param o A JSONObject.
      * @param tagName The optional name of the enclosing tag.
      * @return A string.
-     * @throws JSONException
+     * @throws JSONException If something can't be stringified
      */
     public static String toString(Object o, String tagName)
             throws JSONException {

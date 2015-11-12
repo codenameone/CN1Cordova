@@ -267,8 +267,8 @@ public class CordovaApplication extends Form {
     /**
      * Loads the given URL.  Generally you'll just want to use load("index.html")
      * to load the index.html file from the src/html directory.
-     * @param url
-     * @throws IOException 
+     * @param url The URL to load
+     * @throws IOException If there is an error like the file doesn't exist or can't be reached.
      */
     public void load(String url) throws IOException {
         webview.setURLHierarchy(url);
@@ -306,8 +306,8 @@ public class CordovaApplication extends Form {
     /**
      * Registers a global plugin to be included in all CordovaApplication objects.
      * This won't affect existing objects.  Only ones instantiated after this call.
-     * @param service
-     * @param plugin 
+     * @param service The name of the service that the plugin is registered to serve.
+     * @param plugin The plugin.
      */
     public static void addGlobalPlugin(String service, CordovaPlugin plugin) {
         globalPluginMap.put(service, plugin);
@@ -324,7 +324,7 @@ public class CordovaApplication extends Form {
     
     /**
      * Returns reference to the WebView.
-     * @return 
+     * @return The browser component where the cordova app is displayed.
      */
     public BrowserComponent getWebview() {
         return webview;
@@ -332,7 +332,7 @@ public class CordovaApplication extends Form {
     
     /**
      * Returns reference to the Javascript context for the Cordova application.
-     * @return 
+     * @return The javascript context.
      */
     public JavascriptContext getContext() {
         return context;

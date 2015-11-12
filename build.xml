@@ -446,6 +446,29 @@
          <antcall target="cordova-project-template"/>    
     </target>
     
+    <target name="generate-all-javadocs" description="Generate javadocs for CN1Cordova project and store them in root javadocs dir">
+        <mkdir dir="javadoc"/>
+        <ant dir="cordova" target="jar" inheritall="false"/>
+        <ant dir="cordova" target="javadoc" inheritall="false"/>
+        <mkdir dir="javadoc/cordova"/>
+        <copy todir="javadoc/cordova">
+            <fileset dir="cordova/dist/javadoc" includes="**"/>
+        </copy>
+        <ant dir="CordovaAppBuilder" target="jar" inheritall="false"/>
+        <ant dir="CordovaAppBuilder" target="javadoc" inheritall="false"/>
+        <mkdir dir="javadoc/CordovaAppBuilder"/>
+        <copy todir="javadoc/CordovaAppBuilder">
+            <fileset dir="CordovaAppBuilder/dist/javadoc" includes="**"/>
+        </copy>
+        
+        <ant dir="cordova-plugin-camera" target="jar" inheritall="false"/>
+        <ant dir="cordova-plugin-camera" target="javadoc" inheritall="false"/>
+        <mkdir dir="javadoc/cordova-plugin-camera"/>
+        <copy todir="javadoc/cordova-plugin-camera">
+            <fileset dir="cordova-plugin-camera/dist/javadoc" includes="**"/>
+        </copy>
+    </target>
+    
     <target name="build-cn1-cordova-tools" depends="cordova-project-template" description="Builds the CN1 Cordova CLI project.">
         <ant dir="CordovaAppBuilder" target="jar" inheritall="false"/>
         <property name="tools.dist.dir" location="dist/cn1-cordova-tools"/>

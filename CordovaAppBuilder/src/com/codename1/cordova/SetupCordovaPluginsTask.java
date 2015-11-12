@@ -40,6 +40,8 @@ import org.xml.sax.SAXException;
  * An ANT task that is designed to be run in the "precompile" step target of a 
  * Codename One cordova project.  This will generate the necessary cordova_plugins.js
  * file to allow the installed plugins to work.
+ * 
+ * <p>This is meant to be run from the build
  * @author shannah
  */
 public class SetupCordovaPluginsTask extends Task {

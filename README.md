@@ -1,6 +1,16 @@
 # Support for Cordova Hybrid Apps in Codename One
 
-This project enables developers to create Cordova (HTML5/Javascript) hybrid native apps with Codename One.
+This project enables developers to create [Cordova](https://cordova.apache.org/) (HTML5/Javascript) hybrid native apps with [Codename One](http://www.codenameone.com).
+
+##License
+
+[Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+##Prerequisites
+
+* JDK 8 or Higher
+* ANT
+* Netbeans with Codename One Plugin Installed
 
 ## Installing the Tools
 
@@ -48,3 +58,9 @@ NOTE:  You can also specify the `-Ddest` parameter to specify an alternate outpu
 ## Developing Plugins
 
 See the [Plugin Development Wiki Page](https://github.com/codenameone/CN1Cordova/wiki/Plugin-Development)
+
+## JavaDoc
+
+* [Cordova CN1Lib](https://codenameone.github.io/CN1Cordova/javadoc/cordova)
+* [Ant Tasks](https://codenameone.github.io/CN1Cordova/javadoc/CordovaAppBuilder)
+* [Camera Plugin](https://codenameone.github.io/CN1Cordova/javadoc/cordova-plugin-camera)

@@ -91,7 +91,7 @@ public class CameraPlugin implements CordovaPlugin {
      * Executes the request and returns PluginResult.
      *
      * @param action            The action to execute.
-     * @param args              JSONArry of arguments for the plugin.
+     * @param argsList              JSONArry of arguments for the plugin.
      * @param callbackContext   The callback id used when calling back into JavaScript.
      * @return                  A PluginResult object with a status and message.
      */
@@ -177,7 +177,7 @@ public class CameraPlugin implements CordovaPlugin {
      * or to display URI in an img tag
      *      img.src=result;
      *
-     * @param quality           Compression quality hint (0-100: 0=low quality & high compression, 100=compress of max quality)
+    
      * @param returnType        Set the type of image to return.
      */
     public void takePicture(int returnType, int encodingType) {
@@ -215,7 +215,6 @@ public class CameraPlugin implements CordovaPlugin {
     /**
      * Get image from photo library.
      *
-     * @param quality           Compression quality hint (0-100: 0=low quality & high compression, 100=compress of max quality)
      * @param srcType           The album to get image from.
      * @param returnType        Set the type of image to return.
      * @param encodingType 

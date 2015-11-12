@@ -99,6 +99,8 @@ public class CodenameOneCordovaProject {
      * app name, version, etc... in the various properties and xml files.  If the 
      * package name is changed, it will actually move the old package to the new package
      * and update references to the old package to point to the new package.
+     * 
+     * @param context The ANT task that is calling this updateProject.  Will be used to gain access to the ANT runtime environment.
      */
     public void updateProject(Task context) throws BuildException {
         //Properties codenameOneSettings = new Properties();
