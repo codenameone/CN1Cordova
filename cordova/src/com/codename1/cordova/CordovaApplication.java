@@ -1,22 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright 2015 Codename One
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.codename1.cordova;
 
 import ca.weblite.codename1.json.JSONArray;
 import ca.weblite.codename1.json.JSONObject;
-import com.codename1.io.FileSystemStorage;
 import com.codename1.io.JSONParser;
 import com.codename1.io.Log;
-import com.codename1.io.Storage;
 import com.codename1.javascript.JSFunction;
 import com.codename1.javascript.JSObject;
 import com.codename1.javascript.JavascriptContext;
 import com.codename1.ui.BrowserComponent;
 import com.codename1.ui.Command;
-import com.codename1.ui.Display;
 import com.codename1.ui.Form;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -24,16 +31,13 @@ import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.util.Base64;
 import com.codename1.util.Callback;
-import com.codename1.xml.Element;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 /**
  *
