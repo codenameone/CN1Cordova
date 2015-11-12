@@ -4,7 +4,7 @@ This project enables developers to create Cordova (HTML5/Javascript) hybrid nati
 
 ## Installing the Tools
 
-1. Download latest cn1-cordova-tools.zip, and extract locally.
+1. Download latest [cn1-cordova-tools.zip](https://github.com/codenameone/CN1Cordova/raw/master/cn1-cordova-tools.zip), and extract locally.
 
 
 ## Using the Tools
@@ -44,3 +44,7 @@ This will create Netbeans Project inside the cn1-cordova-tools directory with se
 WARNING: Currently plugins won't be imported.  If the app has plugins installed, you'll see a warning printed.  Future versions may add support for this.  There is a Codename One API for developing Cordova plugins and distributing them as cn1libs.
 
 NOTE:  You can also specify the `-Ddest` parameter to specify an alternate output directory for your project.
+
+## Developing Plugins
+
+See the [Plugin Development Wiki Page](https://github.com/codenameone/CN1Cordova/wiki/Plugin-Development)
