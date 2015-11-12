@@ -36,7 +36,22 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *
+ * ANT task to generate a new Codename One Cordova Project.  This is to be used inside
+ * the cn1-cordova-tools build.xml.
+ * 
+ * <p>There are two variants:</p>
+ * <ol>
+ * <li>Creating a new project from scratch</li>
+ * <li>Importing an existing project</li>
+ * </ol>
+ * 
+ * <p>Usage:</p>
+ * <p>To import an existing app.
+ * <p><code>ant create -Dsource=/path/to/cordova/app [-Ddest=/path/to/outputdir]</code></p>
+ * 
+ * <p>To create a new app.</p>
+ * <p><code>ant create -Did=com.example.hello -Dname="Hello World" [-Ddest=/path/to/outputdir]</code></p>
+ * 
  * @author shannah
  */
 public class GenerateCordovaProject extends Task {

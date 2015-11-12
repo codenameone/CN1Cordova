@@ -24,13 +24,31 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Replace;
 
 /**
- *
+ * Encapsulates a Codename One project and allows you to update certain settings
+ * of the project like packageId, version, projectName, etc..
  * @author shannah
  */
 public class CodenameOneCordovaProject {
+    
+    /**
+     * The project directory that is being modified.
+     */
     private File projectDir;
+    
+    /**
+     * The packageName for the project.
+     */
     private String packageId;
+    
+    /**
+     * The projectName  (i.e. app name)
+     * 
+     */
     private String projectName;
+    
+    /**
+     * The project version.
+     */
     private String version;
 
     /**
@@ -76,6 +94,12 @@ public class CodenameOneCordovaProject {
     }
     
     
+    /**
+     * Updates the project in the file system.  This includes changing the package name,
+     * app name, version, etc... in the various properties and xml files.  If the 
+     * package name is changed, it will actually move the old package to the new package
+     * and update references to the old package to point to the new package.
+     */
     public void updateProject(Task context) throws BuildException {
         //Properties codenameOneSettings = new Properties();
         if (projectDir == null) {

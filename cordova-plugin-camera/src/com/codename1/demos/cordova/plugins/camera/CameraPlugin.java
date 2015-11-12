@@ -33,7 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * An implementation of the Cordova Camera plugin for Codename One.
+ * <p>This version is built in pure java, on top of the Codename One Capture API.  It doesn't currently
+ * support all parameters of the standard plugin but should work for simple use-cases.</p>
+ * <p>Based on <a href="https://www.npmjs.com/package/cordova-plugin-camera">The Cordova Camera Plugin</a>, and the
+ * code follows the android platform version of the camera plugin.
+ * 
  * @author shannah
  */
 public class CameraPlugin implements CordovaPlugin {

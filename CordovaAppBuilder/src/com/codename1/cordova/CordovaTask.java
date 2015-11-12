@@ -38,7 +38,10 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- *
+ * This class was originally developed to be run from within an existing
+ * cordova project and periodically merge with netbeans project.  We decided
+ * to go a different direction, so this class is not used.
+ * @deprecated
  * @author shannah
  */
 public class CordovaTask extends Task {

@@ -31,7 +31,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *
+ * Imports an existing cordova app into the current project.  This is meant to be used
+ * from the cordova-tools build.xml file (inside a Codename One Cordova project).
+ * 
+ * <p>Usage:</p>
+ * <p><code>ant import -Dsource=/path/to/cordova/app</code></p>
  * @author shannah
  */
 public class ImportCordovaAppTask extends Task {

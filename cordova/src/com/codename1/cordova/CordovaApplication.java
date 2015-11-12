@@ -40,16 +40,45 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Encapsulates a Cordova application.
+ * 
+ * <p>This class extends <code>Form</code> to display a BrowserComponent full-screen
+ * with a cordova app running inside it.</p>
  * @author shannah
  */
 public class CordovaApplication extends Form {
+    
+    
+    /**
+     * The browser component that houses the app.
+     */
     private final BrowserComponent webview;
+    
+    /**
+     * Javascript context for java - javascript communication.
+     */
     private JavascriptContext context;
+    
+    /**
+     * Map to store all of the plugins that are registered for this application.
+     */
     private Map<String,CordovaPlugin> pluginMap = new HashMap<String,CordovaPlugin>();
+    
+    /**
+     *  Map of plugins that will be added to all CordovaApplication objects by default.
+     */
     private static Map<String,CordovaPlugin> globalPluginMap = new HashMap<String,CordovaPlugin>();
+    
+    /**
+     * Shared JSON parser.  Instead of creating a new one for each request, since that
+     * may be frequent.
+     */
     private JSONParser jsonParser = new JSONParser();
     
+    /**
+     * Result codes for passing back from Native to Javascript.  These match
+     * the cordova result codes in cordova.js.
+     */
     public static enum Result {
         NO_RESULT,
         OK,
@@ -64,6 +93,9 @@ public class CordovaApplication extends Form {
     };
     
     
+    /**
+     * Constructor.  Creates a new form with the a web view.
+     */
     public CordovaApplication() {
         pluginMap.putAll(globalPluginMap);
         webview = new BrowserComponent();
@@ -203,7 +235,7 @@ public class CordovaApplication extends Form {
                 }
                     , true
                 );
-                
+                onLoad();
                 //webview.execute("console.log('about to call native ready');");
                 webview.execute("window._nativeReady = true; cordova.require('cordova/channel').onNativeReady.fire()");
                 
@@ -232,29 +264,78 @@ public class CordovaApplication extends Form {
     
     
     
-    
+    /**
+     * Loads the given URL.  Generally you'll just want to use load("index.html")
+     * to load the index.html file from the src/html directory.
+     * @param url
+     * @throws IOException 
+     */
     public void load(String url) throws IOException {
         webview.setURLHierarchy(url);
         
     }
     
-    
+    /**
+     * Registers a plugin for this app.  Note:  This is only required if the 
+     * plugin has a native component, as this registers the native callbacks
+     * for the plugin.
+     * 
+     * @param service The name of the plugin.  Should match the name used 
+     * by the plugin in the javascript layer for communicating with it's native 
+     * counterpart.
+     * @param plugin The plugin to be registered.
+     */
     public void addPlugin(String service, CordovaPlugin plugin) {
         pluginMap.put(service, plugin);
     }
     
-    
+    /**
+     * Fires the "pause" event to the cordova js layer.
+     */
     public void pause() {
         webview.execute("cordova.require('cordova/channel').onPause.fire()");
     }
     
+    /**
+     * Fires the "resume" event to the cordova js layer.
+     */
     public void resume() {
         webview.execute("cordova.require('cordova/channel').onResume.fire()");
     }
     
+    /**
+     * Registers a global plugin to be included in all CordovaApplication objects.
+     * This won't affect existing objects.  Only ones instantiated after this call.
+     * @param service
+     * @param plugin 
+     */
     public static void addGlobalPlugin(String service, CordovaPlugin plugin) {
         globalPluginMap.put(service, plugin);
     }
     
    
+    /**
+     * Event fired after the application is loaded.  Meant to be overridden by 
+     * subclasses.
+     */
+    protected void onLoad() {
+        
+    }
+    
+    /**
+     * Returns reference to the WebView.
+     * @return 
+     */
+    public BrowserComponent getWebview() {
+        return webview;
+    }
+    
+    /**
+     * Returns reference to the Javascript context for the Cordova application.
+     * @return 
+     */
+    public JavascriptContext getContext() {
+        return context;
+    }
+    
 }
