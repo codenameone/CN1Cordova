@@ -144,15 +144,16 @@ public class CodenameOneCordovaProject {
             if (!packageId.equals(oldPackage)) {
                 String oldMainPath = oldPackage.replace(".", File.separator);
                 String newMainPath = packageId.replace(".", File.separator);
-                File oldMainFile = new File(srcDir, oldMainPath);
-                File newMainFile = new File(srcDir, newMainPath);
+                File oldMainDir = new File(srcDir, oldMainPath);
+                File newMainDir = new File(srcDir, newMainPath);
+                //String mainClassName = codenameOneSettings.getProperty("codename1.mainName");
 
-                if (!oldMainFile.exists()) {
-                    throw new BuildException("Could not find old main file: "+oldMainFile);
+                if (!oldMainDir.exists()) {
+                    throw new BuildException("Could not find old main dir: "+oldMainDir);
                 }
 
-                File oldMainDir = oldMainFile.getParentFile();
-                File newMainDir = newMainFile.getParentFile();
+                //File oldMainFile = new File(oldMainDir, mainClassName+".java");
+                //File newMainFile = new File(newMainDir, mainClassName+".java");
 
                 newMainDir.getParentFile().mkdirs();
                 if (newMainDir.exists()) {
