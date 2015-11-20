@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<project name="CN1Cordova" default="default" basedir="..">
+    <description>Tools for cordova applications</description>
+    <taskdef name="installCordovaPlugin" classname="com.codename1.cordova.BuildAndInstallCordovaPlugin" classpath="lib/CordovaAppBuilder.jar"/>
+    <target name="install">
+        <installCordovaPlugin/>
+    </target>
+    <target name="default" depends="install"/>
+    
+</project>

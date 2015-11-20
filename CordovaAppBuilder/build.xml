@@ -73,5 +73,6 @@
     <target name="-post-jar">
         <copy todir="../lib" file="${dist.jar}"/>
         <copy todir="../CordovaProjectTemplate/lib" file="${dist.jar}"/>
+        <copy todir="../CordovaLibraryProjectTemplate/lib" file="${dist.jar}"/>
     </target>
 </project>

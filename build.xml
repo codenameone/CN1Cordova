@@ -475,6 +475,7 @@
         <delete dir="${tools.dist.dir}"/>
         <mkdir dir="${tools.dist.dir}"/>
         <mkdir dir="${tools.dist.dir}/CordovaProjectTemplate"/>
+        <mkdir dir="${tools.dist.dir}/CordovaLibraryProjectTemplate"/>
         <copy todir="${tools.dist.dir}">
             <fileset dir="CordovaAppBuilder/dist" includes="CordovaAppBuilder.jar"/>
             <fileset dir="cn1-cordova-tools" includes="**"/>
@@ -489,6 +490,26 @@
         <copy file="lib/CodenameOne.jar" tofile="${tools.dist.dir}/CordovaProjectTemplate/lib/CodenameOne.jar"/>
         <copy file="lib/CodenameOne_SRC.zip" tofile="${tools.dist.dir}/CordovaProjectTemplate/lib/CodenameOne_SRC.zip"/>
         <copy file="lib/CLDC11.jar" tofile="${tools.dist.dir}/CordovaProjectTemplate/lib/CLDC11.jar"/>
+        
+        <copy todir="${tools.dist.dir}/CordovaLibraryProjectTemplate">
+            <fileset dir="CordovaLibraryProjectTemplate">
+                <exclude name="dist"/>
+                <exclude name="build"/>
+            </fileset>
+        </copy>
+        <copy file="lib/CodenameOne.jar" tofile="${tools.dist.dir}/CordovaLibraryProjectTemplate/lib/CodenameOne.jar"/>
+        <copy file="lib/CodenameOne_SRC.zip" tofile="${tools.dist.dir}/CordovaLibraryProjectTemplate/lib/CodenameOne_SRC.zip"/>
+        <copy file="lib/CLDC11.jar" tofile="${tools.dist.dir}/CordovaLibraryProjectTemplate/lib/CLDC11.jar"/>
+        
+        <property name="project.template.tools.dir" location="${tools.dist.dir}/CordovaProjectTemplate/cordova-tools"/>
+        <mkdir dir="${project.template.tools.dir}/CordovaLibraryProjectTemplate"/>
+        <copy todir="${project.template.tools.dir}/CordovaLibraryProjectTemplate">
+            <fileset dir="${tools.dist.dir}/CordovaLibraryProjectTemplate">
+                <exclude name="dist"/>
+                <exclude name="build"/>
+            </fileset>
+        </copy>
+        
         <property name="tools.dist.zip" location="dist/cn1-cordova-tools.zip"/>
         <zip file="${tools.dist.zip}">
             <fileset dir="${tools.dist.dir}" includes="**"/>

@@ -24,6 +24,8 @@
 
 package com.codename1.cordova;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -87,6 +89,8 @@ public class Util {
         copyToFile(i, f);
         return f;
     }
+    
+    
     
     
     public static Properties loadProperties(File propsFile) throws IOException {
@@ -159,5 +163,70 @@ public class Util {
         }
     }
     
+    
+    /**
+     * Reads an input stream to a string
+     * 
+     * @param i the input stream
+     * @param encoding the encoding of the stream
+     * @return a string
+     * @throws IOException thrown by the stream
+     */
+    public static String readToString(InputStream i, String encoding) throws IOException {
+        byte[] b = readInputStream(i);
+        return new String(b, 0, b.length, encoding);
+    }
+    
+    /**
+     * Reads an input stream to a string
+     * 
+     * @param i the input stream
+     * @return a UTF-8 string
+     * @throws IOException thrown by the stream
+     */
+    public static String readToString(InputStream i) throws IOException {
+        return readToString(i, "UTF-8");
+    }
+    
+    public static String readToString(File file) throws IOException {
+        FileInputStream fis=null;
+        try {
+            fis = new FileInputStream(file);
+            return readToString(fis);
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (Exception ex){}
+            }
+        }
+    }
+    
+    public static void writeStringToFile(String str, File f) throws IOException {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(f);
+            ByteArrayInputStream baos = new ByteArrayInputStream(str.getBytes("UTF-8"));
+            Util.copy(baos, fos);
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (Exception ex){}
+            }
+        }
+    }
+    
+    /**
+     * Converts a small input stream to a byte array
+     *
+     * @param i the stream to convert
+     * @return byte array of the content of the stream
+     */
+    public static byte[] readInputStream(InputStream i) throws IOException {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        copy(i, b);
+        return b.toByteArray();
+    }
     
 }

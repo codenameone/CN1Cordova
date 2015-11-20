@@ -77,6 +77,9 @@
         <ant dir=".." target="refresh-libs" inheritall="false"/>
         <copy file="dist/${application.title}.cn1lib" todir="../CordovaProjectTemplate/lib"/>
         <ant dir="../CordovaProjectTemplate" target="refresh-libs" inheritall="false"/>
+        <copy file="build/lib/main.zip" tofile="../CordovaLibraryProjectTemplate/lib/cordova.jar"/>
+        <copy file="lib/CN1JSON.jar" tofile="../CordovaLibraryProjectTemplate/lib/CN1JSON.jar"/>
+        
     </target>
 
     <target name="buildNativeRIM">
