@@ -17,13 +17,20 @@ package com.codename1.cordova;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.taskdefs.Ant;
+import org.apache.tools.ant.taskdefs.SubAnt;
+import org.apache.tools.ant.taskdefs.Ant.TargetElement;
 import org.apache.tools.ant.taskdefs.Copy;
+import org.apache.tools.ant.taskdefs.Property;
 import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -57,6 +64,8 @@ public class ImportCordovaAppTask extends Task {
             throw new BuildException(sourceDir+" is not a directory");
         }
         
+        File sourcePluginsDir = new File(sourceDir, "plugins");
+        
         File configXml = new File(sourceDir, "config.xml");
         if (!configXml.exists()) {
             throw new BuildException(sourceDir+" does not appear to be a valid cordova project.  It is missing the config.xml file");
@@ -69,11 +78,15 @@ public class ImportCordovaAppTask extends Task {
             throw new BuildException("Failed to parse config.xml", ex);
         }
         
+        File destPluginsDir = new File(getProject().getBaseDir(), "plugins");
+        destPluginsDir.mkdir();
+        
         String packageId = config.getAttribute("id");
         String version = config.getAttribute("version");
         String name = null;
         NodeList children = config.getChildNodes();
         int len = children.getLength();
+        List<Task> pluginTasks = new ArrayList<Task>();
         for (int i=0; i<len; i++) {
             Node node = children.item(i);
             if (node instanceof Element) {
@@ -81,7 +94,24 @@ public class ImportCordovaAppTask extends Task {
                 if ("name".equals(el.getTagName())) {
                     name = el.getTextContent();
                 } else if ("plugin".equals(el.getTagName())) {
-                    log("The plugin "+el.getAttribute("name")+" was not automatically imported.  Please install the equivalent plugin as a .cn1lib");
+                    File pluginDir = new File(sourcePluginsDir, el.getAttribute("name"));
+                    if (!pluginDir.exists()) {
+                        //log("The plugin "+el.getAttribute("name")+" was not automatically imported.  Please install the equivalent plugin as a .cn1lib");
+                        throw new BuildException("Failed to import plugin "+el.getAttribute("name")+" because it was not found at "+pluginDir);
+                    }
+                    
+                    GenerateCordovaLibraryProject pluginTask = new GenerateCordovaLibraryProject();//(GenerateCordovaLibraryProject)getProject().createTask("generateCordovaLibraryProject");
+                    pluginTask.setProject(getProject());
+                    pluginTask.setOwningTarget(getOwningTarget());
+                    
+                    pluginTask.setSource(pluginDir.getAbsolutePath());
+                    pluginTask.setDest(new File(getProject().getBaseDir(), "plugins").getAbsolutePath());
+                    pluginTasks.add(pluginTask);
+                    
+                    
+                    
+                    
+                    
                 }
             }
         }
@@ -119,6 +149,23 @@ public class ImportCordovaAppTask extends Task {
         project.setPackageId(packageId);
         project.setVersion(version);
         project.updateProject(this);
+        
+        for (Task pluginTask : pluginTasks) {
+            pluginTask.execute();
+        }
+        SetupCordovaPluginsTask setupPlugins = new SetupCordovaPluginsTask();
+        setupPlugins.setProject(getProject());
+        setupPlugins.setOwningTarget(getOwningTarget());
+        setupPlugins.execute();
+        
+        SubAnt installPlugins = (SubAnt)getProject().createTask("subant");
+        FileSet fs = new FileSet();
+        fs.setDir(new File(getProject().getBaseDir(), "plugins"));
+        fs.setIncludes("*/cordova-tools/build.xml");
+        installPlugins.addFileset(fs);
+        installPlugins.setTarget("install");
+        installPlugins.execute();
+        
         log("Successfully imported cordova project at "+sourceDir);
     }
     

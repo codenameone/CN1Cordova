@@ -48,16 +48,143 @@ import org.xml.sax.SAXException;
  */
 public class GenerateCordovaLibraryProject extends Task {
 
+    private String _source;
+    private String _id;
+    private String _dest;
+    
+    public void setSource(String source) {
+        _source = source;
+    }
+    
+    public String getSource() {
+        return _source;
+    }
+    
+    public void setDest(String dest) {
+        _dest = dest;
+    }
+    
+    public String getDest() {
+        return _dest;
+    }
+    
+    public void setId(String id) {
+        _id = id;
+    }
+    
+    public String getId() {
+        return _id;
+    }
+    
+
+    @Override
+    public void init() throws BuildException {
+        super.init(); 
+        _source = getProject().getProperty("source");
+        _id = getProject().getProperty("id");
+        _dest = getProject().getProperty("dest");
+    }
+    
+    
     @Override
     public void execute() throws BuildException {
+        System.out.println(getProject().getProperties());
         List<File> toDelete = new ArrayList<File>();
         try {
-            String id = getProject().getProperty("id");
+            String id = _id;
+            String sourcePath = null;
+            if (id == null && _source != null) {
+                sourcePath = _source;
+                log("id was not specified but source was.  Trying to load id from project at "+sourcePath);
+                if (sourcePath.startsWith("http://") || sourcePath.startsWith("https://")) {
+                    try {
+                        log("Using Cordova CLI to try to load plugin from "+sourcePath);
+                        // If we didn't provide a source path, let's create a dummy
+                        // cordova project, install the plugin, and try to extract the
+                        // plugin from there.
+
+                        ExecTask exec = (ExecTask)getProject().createTask("exec");
+                        File tmpDir = File.createTempFile("cordova", "temp");
+                        toDelete.add(tmpDir);
+                        tmpDir.delete();
+                        tmpDir.mkdir();
+
+                        exec.setDir(tmpDir);
+                        exec.setExecutable("cordova");
+                        exec.createArg().setValue("create");
+                        exec.createArg().setValue("hello");
+                        exec.createArg().setValue("com.example.hello");
+                        exec.createArg().setValue("Hello");
+                        exec.execute();
+
+
+                        // Now add the plugin
+                        File appDir = new File(tmpDir, "hello");
+                        if (!appDir.exists()) {
+                            throw new BuildException("Failed to create temp app directory");
+                        }
+
+                        exec = (ExecTask)getProject().createTask("exec");
+                        exec.setDir(appDir);
+                        exec.setExecutable("cordova");
+                        exec.createArg().setValue("plugin");
+                        exec.createArg().setValue("add");
+                        exec.createArg().setValue(sourcePath);
+
+
+                        exec.execute();
+
+                        File pluginsDir = new File(appDir, "plugins");
+                        File pluginDir = new File(pluginsDir, id);
+                        if (!pluginDir.exists()) {
+                            throw new BuildException("Failed to create plugin directory in dummy project");
+                        }
+
+                        sourcePath = pluginDir.getPath();
+                        
+
+
+                    } catch (IOException ex) {
+                        throw new BuildException("Attempt to create tmp dir for dummy cordova project failed", ex);
+                    }
+                    
+                } 
+                
+                if (sourcePath == null || !new File(sourcePath).exists()) {
+                    throw new BuildException("The source path "+sourcePath+" does not exist");
+                }
+                
+                log("Trying to load plugin.xml from source "+new File(sourcePath));
+                //Get the DOM Builder Factory
+                DocumentBuilderFactory factory
+                        = DocumentBuilderFactory.newInstance();
+
+                //Get the DOM Builder
+                DocumentBuilder builder;
+                try {
+                    builder = factory.newDocumentBuilder();
+                } catch (ParserConfigurationException ex) {
+                    throw new BuildException(ex);
+                }
+
+                File pluginXML = new File(new File(sourcePath), "plugin.xml");
+
+                try {
+                    Document doc = builder.parse(pluginXML);
+                    Element root = doc.getDocumentElement();
+                    
+                    id = root.getAttribute("id");
+                } catch (Exception ex) {
+                    throw new BuildException("Failed to process pluginXML file "+pluginXML, ex);
+                }
+  
+            }
+            
             if (id == null) {
                 throw new BuildException("No 'id' parameter specified");
             }
 
-            String sourcePath = getProject().getProperty("source");
+            //String sourcePath = getProject().getProperty("source");
             if (sourcePath == null || sourcePath.startsWith("http://") || sourcePath.startsWith("https://")) {
                 try {
                     // If we didn't provide a source path, let's create a dummy
@@ -106,6 +233,9 @@ public class GenerateCordovaLibraryProject extends Task {
                         throw new BuildException("Failed to create plugin directory in dummy project");
                     }
 
+                    
+                    
+                    
                     sourcePath = pluginDir.getPath();
 
 
@@ -122,8 +252,8 @@ public class GenerateCordovaLibraryProject extends Task {
             }
 
             File destDir = getProject().getBaseDir();
-            if (getProject().getProperty("dest") != null) {
-                destDir = new File(getProject().getProperty("dest"));
+            if (_dest != null) {
+                destDir = new File(_dest);
             }
             if (!destDir.exists()) {
                 throw new BuildException("Destination directory "+destDir+" doesn't exist");
@@ -157,14 +287,18 @@ public class GenerateCordovaLibraryProject extends Task {
             File htmlPluginDir = new File(htmlPluginsDir, id);
             File htmlPluginWWWDir = new File(htmlPluginDir, "www");
             htmlPluginWWWDir.mkdirs();
-
-            copy = (Copy)getProject().createTask("copy");
-            copy.setTodir(htmlPluginWWWDir);
-            toCopy = new FileSet();
-            toCopy.setDir(new File(sourceDir, "www"));
-            toCopy.setIncludes("**");
-            copy.addFileset(toCopy);
-            copy.execute();
+            
+            if (new File(sourceDir, "www").exists()) {
+                copy = (Copy)getProject().createTask("copy");
+                copy.setTodir(htmlPluginWWWDir);
+                toCopy = new FileSet();
+                toCopy.setDir(new File(sourceDir, "www"));
+                toCopy.setIncludes("**");
+                copy.addFileset(toCopy);
+                copy.execute();
+            } else {
+                log("Directory "+(new File(sourceDir, "www"))+ " could not be found.  Skipping");
+            }
 
             File pluginXMLDest = new File(srcDir, id + ".xml");
             if (!pluginXMLDest.getName().startsWith("cordova-plugin-")) {
@@ -207,9 +341,20 @@ public class GenerateCordovaLibraryProject extends Task {
                             String modPath = el.getAttribute("src").replace("/", File.separator);
                             File modJSFile = new File(htmlPluginDir, modPath);
                             if (!modJSFile.exists()) {
+                                // The JS file wasn't copied yet.  This might happen
+                                // if the file isn't in the www directory
+                                // Try to copy it
+                                log("Copying "+new File(sourceDir, modPath)+" to "+modJSFile);
+                                Copy copyMod = (Copy)getProject().createTask("copy");
+                                copyMod.setTofile(modJSFile);
+                                copyMod.setFile(new File(sourceDir, modPath));
+                                copyMod.execute();
+                                
+                                
+                            }
+                            if (!modJSFile.exists()) {
                                 log("plugin.xml file includes js-module for "+modJSFile+" but the file cannot be found.  Skipping...");
                             }
-
                             String jsContents = Util.readToString(modJSFile);
                             jsContents = "cordova.define(\""+id+"."+el.getAttribute("name")+"\", function(require, exports, module) { \n" 
                                     + jsContents + "\n});";

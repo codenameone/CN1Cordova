@@ -1,10 +1,14 @@
 <?xml version="1.0"?>
-<project name="CN1Cordova" default="default" basedir="..">
+<project name="CN1Cordova-Library-Project-Tools" default="help" basedir="..">
     <description>Tools for cordova applications</description>
     <taskdef name="installCordovaPlugin" classname="com.codename1.cordova.BuildAndInstallCordovaPlugin" classpath="lib/CordovaAppBuilder.jar"/>
+    <taskdef name="help" classname="com.codename1.cordova.CLIHelpTask" classpath="lib/CordovaAppBuilder.jar"/>
     <target name="install">
         <installCordovaPlugin/>
     </target>
-    <target name="default" depends="install"/>
+    <target name="help" description="CLI Usage instructions">
+        <property name="type" value="library-project"/>
+        <help/>
+    </target>
     
 </project>

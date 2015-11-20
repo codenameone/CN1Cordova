@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Codename One Cordova Tools" default="default" basedir=".">
+<project name="Codename One Cordova Tools" default="help" basedir=".">
     <taskdef name="createCordovaApp" classname="com.codename1.cordova.GenerateCordovaProject" classpath="CordovaAppBuilder.jar"/>
     <taskdef name="createCordovaPluginProject" classname="com.codename1.cordova.GenerateCordovaLibraryProject" classpath="CordovaAppBuilder.jar"/>
+    <taskdef name="help" classname="com.codename1.cordova.CLIHelpTask" classpath="CordovaAppBuilder.jar"/>
     <description>Tools for creating Codename One Cordova Projects</description>
     
     <target name="create" description="Create a new Codename One cordova project">
@@ -10,5 +11,9 @@
     
     <target name="create-plugin" description="Create a new Codename One cordova library project">
         <createCordovaPluginProject/>
+    </target>
+    
+    <target name="help" description="CLI Usage instructions">
+        <help/>
     </target>
 </project>

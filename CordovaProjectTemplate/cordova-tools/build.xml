@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-<project name="CN1Cordova" default="default" basedir="..">
+<project name="CN1Cordova-Project-Tools" default="help" basedir="..">
     <description>Tools for cordova applications</description>
     <taskdef name="generateCordovaPlugins" classname="com.codename1.cordova.SetupCordovaPluginsTask" classpath="lib/CordovaAppBuilder.jar"/>
     <taskdef name="importCordovaApp" classname="com.codename1.cordova.ImportCordovaAppTask" classpath="lib/CordovaAppBuilder.jar"/>
     <taskdef name="generateCordovaLibraryProject" classname="com.codename1.cordova.GenerateCordovaLibraryProject" classpath="lib/CordovaAppBuilder.jar"/>
+    <taskdef name="help" classname="com.codename1.cordova.CLIHelpTask" classpath="lib/CordovaAppBuilder.jar"/>
     <target name="refresh-plugins" description="Regenerates the cordova_plugins.js file">
         <generateCordovaPlugins/>
     </target>
@@ -16,5 +17,12 @@
         <property name="dest" value="${basedir}/plugins"/>
         <generateCordovaLibraryProject/>
     </target>
+    <target name="help" description="CLI Usage instructions">
+        <property name="type" value="project"/>
+        
+        <help/>
+    </target>
+    
+    
     
 </project>

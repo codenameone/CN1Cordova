@@ -38,6 +38,16 @@ import org.apache.tools.ant.taskdefs.Ant;
  * @author shannah
  */
 public class BuildAndInstallCordovaPlugin extends Task {
+    
+    
+
+    @Override
+    public void init() throws BuildException {
+        super.init(); //To change body of generated methods, choose Tools | Templates.
+        
+    }
+    
+    
 
     @Override
     public void execute() throws BuildException {

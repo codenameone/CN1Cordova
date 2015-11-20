@@ -33,6 +33,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -141,10 +142,19 @@ public class SetupCordovaPluginsTask extends Task {
                             new FileInputStream(configFile));
             Element root = document.getDocumentElement();
             String pluginId = root.getAttribute("id");
-            NodeList jsModules = root.getElementsByTagName("js-module");
+            NodeList jsModules = root.getChildNodes();//getElementsByTagName("js-module");
             
             for (int i=0; i<jsModules.getLength(); i++) {
+                Node n = jsModules.item(i);
+                if (!(n instanceof Element)) {
+                    continue;
+                }
+                
                 Element module = (Element)jsModules.item(i);
+                if (!"js-module".equals(module.getTagName())) {
+                    continue;
+                }
+                
                 if (module.getParentNode() != root) {
                     continue;
                 }
@@ -181,5 +191,7 @@ public class SetupCordovaPluginsTask extends Task {
         
         return sb.toString();
     }
+    
+    
     
 }
