@@ -32,6 +32,11 @@ This will create a new Codename One netbeans project at cn1-cordova-tools/HelloW
 
 Open this project up in Netbeans to start working on it.  You'll find the app's www files (e.g. index.html etc...) inside the src/html directory of the project.
 
+This project will include two subdirectories worth noting, that aren't part of a normal Codename One project:
+
+1. "plugins" - Contains Codename One library projects for plugins associated with this app.
+2. "cordova-tools" - Contains an ANT build script with targets to help manage the cordova-related aspects of the project.  E.g. install plugins, and refresh the project with new plugin cn1libs are added. [Read the CLI Usage Instructions](https://github.com/codenameone/CN1Cordova/wiki/Project-cordova-tools-CLI-Usage)
+
 #### Specifying Output Directory
 
 By default the project is generated inside the cn1-cordova-tools directory.  You can change this to a different directory using the `-Ddest=</path/to/dest` command-line flag.  E.g.
@@ -39,6 +44,8 @@ By default the project is generated inside the cn1-cordova-tools directory.  You
 ~~~~
 $ ant create -Did=com.example.hello -Dname=HelloWorld -Ddest=/Users/shannah/NetbeansProjects
 ~~~~
+
+
 
 ### Migrating an Existing Cordova Project to a Codename One Cordova Project
 
@@ -51,9 +58,16 @@ $ ant create -Dsource=</path/to/cordova/app>
 
 This will create Netbeans Project inside the cn1-cordova-tools directory with settings (package id and name) matching the app specified in the `-Dsource` argument. The contents of the app's `www` directory will be copied to the project's `src/html` directory.
 
-WARNING: Currently plugins won't be imported.  If the app has plugins installed, you'll see a warning printed.  Future versions may add support for this.  There is a Codename One API for developing Cordova plugins and distributing them as cn1libs.
+This project will include two subdirectories worth noting, that aren't part of a normal Codename One project:
+
+1. "plugins" - Contains Codename One library projects for plugins associated with this app.
+2. "cordova-tools" - Contains an ANT build script with targets to help manage the cordova-related aspects of the project.  E.g. install plugins, and refresh the project with new plugin cn1libs are added. [Read the CLI Usage Instructions](https://github.com/codenameone/CN1Cordova/wiki/Project-cordova-tools-CLI-Usage)
 
 NOTE:  You can also specify the `-Ddest` parameter to specify an alternate output directory for your project.
+
+### CLI Usage Instructions
+
+[Read the full cn1-cordova-tools ANT task CLI Usage instructions](https://github.com/codenameone/CN1Cordova/wiki/cn1-cordova-tools-CLI-usage)
 
 ## Developing Plugins
 

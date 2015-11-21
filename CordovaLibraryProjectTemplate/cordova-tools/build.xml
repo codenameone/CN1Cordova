@@ -3,7 +3,7 @@
     <description>Tools for cordova applications</description>
     <taskdef name="installCordovaPlugin" classname="com.codename1.cordova.BuildAndInstallCordovaPlugin" classpath="lib/CordovaAppBuilder.jar"/>
     <taskdef name="help" classname="com.codename1.cordova.CLIHelpTask" classpath="lib/CordovaAppBuilder.jar"/>
-    <target name="install">
+    <target name="install" description="Builds the project, and installs the plugin in the parent Cordova application project">
         <installCordovaPlugin/>
     </target>
     <target name="help" description="CLI Usage instructions">

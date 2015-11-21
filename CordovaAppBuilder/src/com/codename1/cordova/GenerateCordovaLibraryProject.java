@@ -88,7 +88,7 @@ public class GenerateCordovaLibraryProject extends Task {
     
     @Override
     public void execute() throws BuildException {
-        System.out.println(getProject().getProperties());
+        //System.out.println(getProject().getProperties());
         List<File> toDelete = new ArrayList<File>();
         try {
             String id = _id;
@@ -135,7 +135,15 @@ public class GenerateCordovaLibraryProject extends Task {
                         exec.execute();
 
                         File pluginsDir = new File(appDir, "plugins");
-                        File pluginDir = new File(pluginsDir, id);
+                        File pluginDir = null;
+                        for (File f : pluginsDir.listFiles()) {
+                            if (f.isDirectory() && !f.getName().startsWith(".")) {
+                                pluginDir = f;
+                            }
+                        }
+                        if (pluginDir == null) {
+                            throw new BuildException("Failed to download plugin from url.");
+                        }
                         if (!pluginDir.exists()) {
                             throw new BuildException("Failed to create plugin directory in dummy project");
                         }
